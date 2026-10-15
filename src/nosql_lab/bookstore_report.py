@@ -4,7 +4,7 @@
 import logging
 import os
 import sys
-
+# I'm not sure why the pymongo import doesn't work, but the uv script still runs
 from pymongo import MongoClient
 
 # Credentials come from the environment, never from this file.
@@ -18,10 +18,9 @@ AUTHOR_IDS = ["author_002", "author_003", "author_004"]
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-
+"""Print each listed author and the books linked by author_ids."""
+# Count how many of the requested ids exist in the authors collection.
 def print_author_report(authors, books, author_ids):
-    """Print each listed author and the books linked by author_ids."""
-    # Count how many of the requested ids exist in the authors collection.
     total = authors.count_documents({"_id": {"$in": author_ids}})
     print(f"Authors: {total}")
     print()
@@ -38,9 +37,8 @@ def print_author_report(authors, books, author_ids):
             print(f"  {book['title']} ({book['published_year']})")
         print()
 
-
+"""Connect to Atlas, print the author/book report, and close the client."""
 def main():
-    """Connect to Atlas, print the author/book report, and close the client."""
     if not all([MONGODB_ATLAS_URL, MONGODB_ATLAS_USER, MONGODB_ATLAS_PWD]):
         log.error(
             "Set MONGODB_ATLAS_URL, MONGODB_ATLAS_USER, and MONGODB_ATLAS_PWD"
